@@ -47,7 +47,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Profile Routes
 
     Route::post('/profile', [ProfileController::class, 'store']);
-    Route::patch('/profile', [ProfileController::class, 'update']);
+    // here i use post method to update becuase laravel is not accepting form-data in the PUT/PATCH request  
+
+    Route::post('/profile', [ProfileController::class, 'update']);
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::get('/teacher/{teacher}', [TeacherController::class, 'show']);
 

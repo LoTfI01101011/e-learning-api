@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Profile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
@@ -61,35 +62,32 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
+        if (request()->hasAny(['birth_date', 'state', 'bio', 'avatar'])) {
+            $attributes = request()->validate([
+                'birth_date' => 'sometimes|required|date',
+                'state' => 'sometimes|required|string',
+                'bio' => 'string',
+                'avatar' => 'sometimes|required|image'
+            ]);
 
-        if ($request->name || $request->email) {
-            $attributes = $request->validate([
+            if (request()->has('avatar')) {
+                $path = Storage::putFile('avatars', $attributes['avatar']);
+                unset($attributes['avatar']);
+
+                if ($path) {
+                    $attributes['avatar_url'] = $path;
+                }
+            }
+
+            $request->user()->profile()->update($attributes);
+        } else {
+            $attributes = request()->validate([
                 'name' => 'sometimes|required',
-                'email' => 'sometimes|required|email'
+                'email' => 'sometimes|required|email',
             ]);
             $request->user()->update($attributes);
         }
-        if ($request->hasFile('avatar_url')) {
-            $request->validate([
-                'avatar_url' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-            ]);
-        
-            $avatarPath = $request->file('avatar_url')->store('avatars');
-               dd($avatarPath) ;
-            $request->user()->profile()->update([
-                'avatar_url' => $avatarPath
-            ]);
-            abort(200);
-        }
 
-
-        $attributes = $request->validate([
-            'birth_date' => 'sometimes|required|date_format:Y-m-d',
-            'state' => 'sometimes|required|string',
-            'bio' => 'string',
-
-        ]);
-
-        return response()->json($request->user()->profile()->update($attributes));
+        return $request->user()->load('profile');
     }
 }
