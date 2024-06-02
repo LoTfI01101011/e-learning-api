@@ -13,7 +13,7 @@ class TeacherController extends Controller
 {
     public function show(User $teacher){
 
-    if(!$teacher->categroy == 'teacher'){
+    if($teacher->categroy === 'student'){
         abort(401, 'Unauthorized: This user is not a teacher.');
     }
     
