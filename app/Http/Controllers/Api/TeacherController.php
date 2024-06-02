@@ -17,7 +17,7 @@ class TeacherController extends Controller
 
     if($teacher->category === "student"){
         // return response()->json($teacher->category);
-        abort(403, 'Unauthorized: This user is not a teacher.');
+        abort(403, 'Forbidden: Your are not able to see other students profiles.');
     }
     
     $teacher->load('profile');
