@@ -84,6 +84,7 @@ class Announcement extends Model
         );
     }
 
+    
     public function enroll(): HasMany
     {
         return $this->hasMany(Enroll::class);
