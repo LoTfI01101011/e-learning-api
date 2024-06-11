@@ -98,10 +98,11 @@ class AnnouncementController extends Controller
 
 
         $announcement->loadCount('like');
-
-        $announcement->load('comment.reply');
-
-        $announcement->load('user.profile');
+        $announcement->load([
+            'comment.user.profile',
+            'comment.reply',
+            'user.profile'
+        ]);
         return response()->json($announcement);
     }
 }
