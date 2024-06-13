@@ -100,7 +100,7 @@ class AnnouncementController extends Controller
         $announcement->loadCount('like');
         $announcement->load([
             'comment.user.profile',
-            'comment.reply',
+            'comment.reply.user.profile',
             'user.profile'
         ]);
         return response()->json($announcement);

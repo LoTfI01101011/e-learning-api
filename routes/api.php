@@ -75,7 +75,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Newsletter
     // You must run this in your terminal composer require mailchimp/marketing
-    Route::post('/newsletter', NewsletterController::class);
+    
 
     //route for spesific announcement with the liks and comments
 
@@ -98,5 +98,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::patch('replies/{reply}', [CourseReplyController::class, 'update']);
     Route::delete('replies/{reply}', [CourseReplyController::class, 'destroy']);
 });
+
+Route::post('/newsletter', NewsletterController::class);
 
 Route::get('/feed', [AnnouncementsFeedContoller::class, 'index']);

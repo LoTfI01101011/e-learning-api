@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class reply extends Model
 {
@@ -15,4 +16,7 @@ class reply extends Model
         'comment_id',
         'reply'
     ];
+    public function user() : BelongsTo {
+        return $this->belongsto(User::class);
+    }
 }
